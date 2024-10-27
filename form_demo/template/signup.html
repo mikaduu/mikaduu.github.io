@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>register</title>
     <style>
 .container {
   display: flex;
@@ -84,22 +84,26 @@
     </style>
 </head>
 <body style="background-color: rgb(190, 243, 255);">
-  <div class="container" style="margin-top: 100px;">
+  <div class="container" style="margin-top: 80px;">
     <div class="form_area">
-        <p class="title">LOGIN</p>
+        <p class="title">SIGN UP</p>
         <form action="">
             <div class="form_group">
                 <label class="sub_title" for="name">Name</label>
                 <input placeholder="Enter your name" class="form_style" type="text">
             </div>
             <div class="form_group">
+                <label class="sub_title" for="email">Email</label>
+                <input placeholder="Enter your email" id="email" class="form_style" type="email">
+            </div>
+            <div class="form_group">
                 <label class="sub_title" for="password">Password</label>
                 <input placeholder="Enter your password" id="password" class="form_style" type="password">
             </div>
-            <div style="margin-bottom: 50px;">
-                <button class="btn">LOGIN</button>
-                <p>Do not have an Account? </p>
-                <a class="link" href="signup.html" >REGISTER Here!</a>
+            <div>
+                <button class="btn">SIGN UP</button>
+                <p style="margin-bottom: 50px;">Have an Account? <a class="link" href="login.html">Login Here!</a></p>
+            </a>
           </div>
         </form>
     </div>
