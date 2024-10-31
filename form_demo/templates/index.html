@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mikadu的主页</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body style="background-color: rgb(225, 238, 250);">
+    <div class="welcome-page">
+        <div id="navbar" class="nav">
+            <div class="menu-container">
+                <i class="fas fa-bars menu-icon" id="menu-icon"></i>
+            </div>
+
+            <div class="title">
+                <img src="../static/images/tubiao.jpg" alt="网站图标" class="title-icon">
+                <h1 class="title-text">My MC Community</h1>
+            </div>
+
+            <div class="hyperlink-container">
+                {%if username %}
+                    <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon">
+                    <a href="{{url_for('user',id=user_info.id)}}"class="custom-link">{{username}}</a>
+                {% else %}
+                     <img src="../static/images/touxiang.jpg" alt="默认头像" class="user-icon">
+                     <a href="{{url_for('login')}}" class="custom-link">登录/注册</a>   
+                {% endif %}
+            </div>
+        </div>
+        <!-- 视差背景和文本 -->
+        <div class="parallax">
+            <img src="../static/images/xuanchuan.jpg" alt="背景图 1" style="opacity: 1;" >
+            <img src="../static/images/background2.png" alt="背景图 2">
+            <img src="../static/images/background3.png" alt="背景图 3">
+            <img src="../static/images/1.webp" alt="背景图 4">
+            <img src="../static/images/2.webp" alt="背景图 5">
+
+            <div class="welcome-content">
+                <div class="welcome-text">Welcome to Our Community!</div>
+            </div>
+            <!-- 添加指示器 -->
+            <ul class="indicators"></ul>
+        </div>
+        
+    </div>
+    
+    <div class="menu" id="menu">
+        <ul>
+            <li><a href="{{url_for('index')}}">首页</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">服务</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </div>
+
+    <div class="main-text">
+        <div class="left-text">
+            <!--左侧内容栏-->
+            <div class="left-text-nav">
+                <!--左上侧导航-->
+                <div class="left-text-nav-box shadow">
+
+                </div>
+                <div class="left-text-nav-box shadow">
+
+                </div>
+                <div class="left-text-nav-box shadow"style="margin-right:60px">
+
+                </div>
+            </div>
+            <div>
+                <!--左下侧内容-->
+                <div class="left-text-textbox shadow">
+
+                </div>
+                <div class="left-text-textbox shadow">
+
+                </div>
+                <div class="left-text-textbox shadow">
+
+                </div>
+                <div class="left-text-textbox shadow" >
+
+                </div>
+                <!-- <div class="left-text-textbox shadow">
+
+                </div>
+                <div class="left-text-textbox shadow">
+
+                </div> -->
+            </div>
+        </div>
+        <div style="flex:1">
+            <!--右侧图片，讨论区-->
+            <div class="discussion shadow">
+
+            </div>
+            <div class="photo-title shadow">
+               
+                
+            </div>
+            <div class="photo shadow">
+
+            </div>
+        </div>
+    </div>
+    <div class="end">
+
+    </div>
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+</body>
+</html>
