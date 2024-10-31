@@ -326,11 +326,17 @@ body {
     position: relative;
     display: flex;
     align-items: center; 
-    /* justify-content: center; */
+   
     background-color: rgb(225, 238, 250);
     margin-left: 200px;
     margin-right: 200px;
-
+    margin-top: 30px;
+    background-image: url('/static/images/info_background1.png'); /* 替换为你的图片路径 */
+    background-size: cover; /* 背景图片覆盖整个容器 */
+    background-position: center; /* 设置背景图片居中 */
+    padding: 20px; /* 添加内边距以适应内容 */
+    border-radius: 10px; /* 可选：设置圆角 */
+    color: white; /* 根据需要设置字体颜色 */
  }  
 
  .user-icon-2
@@ -340,8 +346,8 @@ body {
     margin-left: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
-    height:100px;
-    width:100px;
+    height:150px;
+    width:150px;
     border-radius: 50%; /* 使图像变成圆形 */
     object-fit: cover; /* 保持图像的比例，填充整个圆形 */
  }

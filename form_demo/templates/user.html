@@ -6,6 +6,7 @@
     <title>用户主页</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user.css')}}">
 </head>
 <body>
     <div class="welcome-page" style="position: fixed;">
@@ -29,11 +30,245 @@
             </ul>
         </div>
         <div class="info-container">
+            {% if id == user_info.id %}
             <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon-2">
-            
+            <div class="user-info">
+                <p class="user-name"><span id="username">{{ user_info.username }}</span></p>
+                <br>
+                <p class="user-name">邮箱: <span id="email">{{ user_info.email }}</span></p>
+            </div>
+            {% else %}
+            <img src="{{url_for('static', filename=user_info2.avatar_url)}}" alt="用户头像" class="user-icon-2">
+            <div class="user-info">
+                <p class="user-name"><span id="username">{{ user_info2.username }}</span></p>
+                <br>
+                <p class="user-name">邮箱: <span id="email">{{ user_info2.email }}</span></p>
+            </div>
+            {% endif %}
+            <div class="button-container">
+                {% if id == user_info.id %}
+                    <button class="edit-button" onclick="openEditModal()">修改信息</button>
+                    <button class="change-password" onclick="openPasswordModal()">修改密码</button>
+                    <button class="upload-avatar" onclick="openUploadModal()">上传头像</button>
+                {% endif %}
+                    <button class="search-user" onclick="openSearchModal()">查找用户</button>
+            </div>
         </div>
-
-
+        
+       
+         
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>修改信息</h2>
+                <div class="form-group">
+                    <label for="username-input">用户名</label>
+                    <input type="text" id="username-input" value="{{ user_info.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="email-input">邮箱</label>
+                    <input type="email" id="email-input" value="{{ user_info.email }}">
+                </div>
+                <button class="save-button" onclick="saveUserInfo()">保存</button>
+            </div>
+        </div>
+    
+        <!-- 修改密码模态框 -->
+        <div id="passwordModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closePasswordModal()">&times;</span>
+                <h2>修改密码</h2>
+                <div class="form-group">
+                    <label for="old-password">旧密码</label>
+                    <input type="password" id="old-password">
+                </div>
+                <div class="form-group">
+                    <label for="new-password">新密码</label>
+                    <input type="password" id="new-password">
+                </div>
+                <button class="save-button" onclick="changePassword()">保存</button>
+            </div>
+        </div>
+    
+        <!-- 上传头像模态框 -->
+        <div id="uploadModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeUploadModal()">&times;</span>
+                <h2>上传头像</h2>
+                <div class="form-group">
+                    <label for="avatar-input">选择头像</label>
+                    <input type="file" id="avatar-input" accept="image/*">
+                </div>
+                <button class="save-button" onclick="uploadAvatar()">上传</button>
+            </div>
+        </div>
+        <div id="searchModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeSearchModal()">&times;</span>
+                <h2>查找用户</h2>
+                <div class="form-group">
+                    <label for="search-input">请输入要查找的用户名</label>
+                    <input type="text" id="search-input" placeholder="用户名">
+                </div>
+                <button class="save-button" onclick="searchUser()">查找</button>
+            </div>
+        </div>
+        <!--登出按钮-->
+        {% if id == user_info.id %}
+        <div class="footer">
+            <form action="{{ url_for('logout') }}" method="get" style="display:inline;">
+                <button type="submit" class="logout-button">登出</button>
+            </form>
+        </div>
+        {% endif %}
         <script src="{{url_for('static', filename='js/script.js')}}"></script>
+        <script>
+            function openEditModal() {
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function openPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'block';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = 'block';
+        }
+
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+        }
+
+        function saveUserInfo() {
+         const username = document.getElementById('username-input').value;
+         const email = document.getElementById('email-input').value;
+
+         fetch('/edit_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: username, email: email }),
+            })
+            .then(response => response.json())
+            .then(data => {
+            {
+                alert(data.message);
+            }
+        closeEditModal();
+        window.location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    function changePassword() {
+        const oldPassword = document.getElementById('old-password').value;
+        const newPassword = document.getElementById('new-password').value;
+
+        fetch('/change_password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            closePasswordModal();
+            window.location.reload();  // 根据需求决定是否刷新
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function uploadAvatar() {
+        const fileInput = document.getElementById('avatar-input');
+        if (fileInput.files.length === 0) {
+            alert("请选择一个头像文件！");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('avatar', fileInput.files[0]);
+
+        fetch('/upload_avatar', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            closeUploadModal();
+            window.location.reload();  // 刷新以显示新的头像
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function searchUser() {
+        const searchInput = document.getElementById('search-input').value;
+        if (searchInput === "") {
+        alert("请输入用户名！");
+        return;
+        }
+    
+        fetch('/search_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: searchInput }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status===1)
+            {
+                alert(data.message);
+                window.location.href = "/user/" + data.user_id;
+            }
+            else
+            {
+                alert(data.message);
+            }
+       
+        })
+        .catch(error => {
+            alert(error.message); // 显示未找到用户的提示
+        })
+        .finally(() => {
+            closeSearchModal();  // 关闭查找用户的模态框
+        });
+}
+        
+        // 当点击模态框外部区域时，关闭模态框
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('editModal')) {
+                closeEditModal();
+            }
+            if (event.target === document.getElementById('passwordModal')) {
+                closePasswordModal();
+            }
+            if (event.target === document.getElementById('uploadModal')) {
+                closeUploadModal();
+            }
+            if (event.target === document.getElementById('searchModal')) {
+                closeUploadModal();
+            }
+        }
+        </script>
 </body>
 </html>
