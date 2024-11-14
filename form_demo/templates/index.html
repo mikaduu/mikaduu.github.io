@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,50 +8,52 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body style="background-color: rgb(225, 238, 250);">
     <div class="welcome-page">
         <div id="navbar" class="nav">
             <div class="menu-container">
                 <i class="fas fa-bars menu-icon" id="menu-icon"></i>
             </div>
-
             <div class="title">
                 <img src="../static/images/tubiao.jpg" alt="网站图标" class="title-icon">
                 <h1 class="title-text">My MC Community</h1>
             </div>
-
             <div class="hyperlink-container">
                 {%if username %}
-                    <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon">
-                    <a href="{{url_for('user',id=user_info.id)}}"class="custom-link">{{username}}</a>
+                <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon">
+                <a href="{{url_for('user',id=user_info.id)}}" class="custom-link">{{username}}</a>
                 {% else %}
-                     <img src="../static/images/touxiang.jpg" alt="默认头像" class="user-icon">
-                     <a href="{{url_for('login')}}" class="custom-link">登录/注册</a>   
+                <img src="../static/images/touxiang.jpg" alt="默认头像" class="user-icon">
+                <a href="{{url_for('login')}}" class="custom-link">登录/注册</a>
                 {% endif %}
             </div>
         </div>
         <!-- 视差背景和文本 -->
         <div class="parallax">
-            <img src="../static/images/xuanchuan.jpg" alt="背景图 1" style="opacity: 1;" >
+            <img src="../static/images/welcomebackground2.jpg" alt="背景图 1" style="opacity: 1;">
             <img src="../static/images/background2.png" alt="背景图 2">
             <img src="../static/images/background3.png" alt="背景图 3">
-            <img src="../static/images/1.webp" alt="背景图 4">
-            <img src="../static/images/2.webp" alt="背景图 5">
+            <img src="../static/images/background4.png" alt="背景图 4">
+            <img src="../static/images/welcomebackground4.jpg" alt="背景图 5">
 
             <div class="welcome-content">
-                <div class="welcome-text">Welcome to Our Community!</div>
+                <!-- <div class="welcome-text">Welcome <br>to <br>My Minecraft Comminity!</div> -->
+                <div class="dynamic-text"></div>
             </div>
             <!-- 添加指示器 -->
             <ul class="indicators"></ul>
         </div>
-        
+
     </div>
-    
+
     <div class="menu" id="menu">
         <ul>
             <li><a href="{{url_for('index')}}">首页</a></li>
-            <li><a href="#">关于我们</a></li>
-            <li><a href="#">服务</a></li>
+            {% if username %}
+            <li><a href="{{url_for('user',id=user_info.id)}}">用户主页</a></li>
+            {% endif %}
+            <li><a href="{{url_for('posts')}}">讨论区</a></li>
             <li><a href="#">联系我们</a></li>
         </ul>
     </div>
@@ -60,34 +63,34 @@
             <!--左侧内容栏-->
             <div class="left-text-nav">
                 <!--左上侧导航-->
-                <div class="left-text-nav-box shadow">
-
+                <div class="left-text-nav-box shadow" style="background-image: url('/static/images/youqinglianjie.jpg'); background-size: cover; background-position: center; ">
+                    <a href="https://space.bilibili.com/353024989" class="nav-link youqinglianjie">Friendly Links</a>
                 </div>
-                <div class="left-text-nav-box shadow">
-
+                <div class="left-text-nav-box shadow"style="background-image: url('/static/images/guanfangwangzhan.png'); background-size: cover; background-position: center; ">
+                    <a href="https://www.minecraft.net/zh-hans" class="nav-link guanfangwangzhan" >Official Website</a>
                 </div>
-                <div class="left-text-nav-box shadow"style="margin-right:60px">
+                <div class="left-text-nav-box shadow" style="margin-right:60px;background-image: url('/static/images/jingqingqidai.jpg'); background-size: cover; background-position: center;">
 
                 </div>
             </div>
             <div>
                 <!--左下侧内容-->
-                <div class="left-text-textbox shadow">
-
+                <div class="left-text-textbox shadow temp"style="background-image: url('/static/images/tiezibeijing4.webp'); background-size: cover; background-position: center; ">
+                    <a href="https://baike.baidu.com/item/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/6036091?fr=ge_ala" class="left-text-textbox-a ">游戏介绍</a>
                 </div>
-                <div class="left-text-textbox shadow">
-
+                <div class="left-text-textbox shadow temp"style="background-image: url('/static/images/tiezibeijing2.png'); background-size: cover; background-position: center; ">
+                    <a href="https://www.bilibili.com/opus/644835111317012489" class="left-text-textbox-a ">角色介绍</a>
                 </div>
-                <div class="left-text-textbox shadow">
-
+                <div class="left-text-textbox shadow temp"style="background-image: url('/static/images/tiezibeijing1.webp'); background-size: cover; background-position: center; ">
+                    <a href="https://www.bilibili.com/opus/312092711939863514" class="left-text-textbox-a ">游戏玩法:生存</a>
                 </div>
-                <div class="left-text-textbox shadow" >
-
+                <div class="left-text-textbox shadow temp"style="background-image: url('/static/images/tiezibeijing5.png'); background-size: cover; background-position: center; ">
+                    <a href="https://www.bilibili.com/opus/647324332633096192" class="left-text-textbox-a ">游戏玩法:创造</a>
+                </div>
+                <div class="left-text-textbox shadow temp"style="background-image: url('/static/images/tiezibeijing6.jpg'); background-size: cover; background-position: center; ">
+                    <a href="https://www.bilibili.com/opus/982894804656455713" class="left-text-textbox-a ">游戏玩法:红石</a>
                 </div>
                 <!-- <div class="left-text-textbox shadow">
-
-                </div>
-                <div class="left-text-textbox shadow">
 
                 </div> -->
             </div>
@@ -95,21 +98,67 @@
         <div style="flex:1">
             <!--右侧图片，讨论区-->
             <div class="discussion shadow">
-
+                <a href="{{ url_for('posts') }}" class="discussion-link">讨论区</a>
             </div>
-            <div class="photo-title shadow">
-               
-                
+
+            <div class="photo-title">
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gradBackground" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgb(255,228,225); stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgb(173,216,230); stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradText" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgb(255,0,150); stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgb(0,204,255); stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- 背景矩形 -->
+                    <rect width="100%" height="100%" fill="url(#gradBackground)" rx="15" ry="15" />
+
+                    <!-- 文本 -->
+                    <text x="50%" y="55%" font-family="Arial" font-size="60" fill="url(#gradText)" stroke="black"
+                        stroke-width="1.5" text-anchor="middle" dominant-baseline="middle"
+                        style="font-family: 'KaiTi', serif; ">
+                        照片墙
+                    </text>
+                </svg>
             </div>
             <div class="photo shadow">
-
+                <img src="../static/images/photo1.jpg" alt="照片 1" class="photo-image" style="opacity: 1;">
+                <img src="../static/images/photo2.jpg" alt="照片 2" class="photo-image" style="opacity: 0;">
+                <img src="../static/images/photo3.jpg" alt="照片 3" class="photo-image" style="opacity: 0;">
+                <img src="../static/images/photo4.jpg" alt="照片 4" class="photo-image" style="opacity: 0;">
+                <img src="../static/images/photo5.jpg" alt="照片 5" class="photo-image" style="opacity: 0;">
+                <div class="arrow left-arrow" id="left-arrow">&lt;</div>
+                <div class="arrow right-arrow" id="right-arrow">&gt;</div>
             </div>
         </div>
     </div>
-    <div class="end">
-
+    <div>
+        <hr class="custom-hr">
+        <p class="custom-paragraph">没有更多内容了</p>
     </div>
 
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    <script>
+        window.onscroll = function () {
+            const navbar = document.getElementById("navbar");
+            const scrollDistance = 640; // 设置滚动距离
+
+            if (document.body.scrollTop > scrollDistance || document.documentElement.scrollTop > scrollDistance) {
+                navbar.classList.add("fixed"); // 添加fixed类
+            } else {
+                navbar.classList.remove("fixed"); // 移除fixed类
+                if (menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                    menuContainer.classList.remove('active');
+                    menuIcon.classList.remove('active');
+                }
+            }
+        };
+    </script>
 </body>
+
 </html>

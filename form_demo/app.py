@@ -7,26 +7,29 @@ import time
 
 app = Flask(__name__)
 app.secret_key = 'my minecraft community'
-conn = pymysql.connect(host='localhost', port=3306,
+conn_user = pymysql.connect(host='localhost', port=3306,
                        user='root', passwd='jjji99997777',
                        database='user', charset='utf8')
 
+conn_posts = pymysql.connect(host='localhost', port=3306,
+                              user='root', passwd='jjji99997777',
+                              database='posts', charset='utf8')
 
-def con_my_sql(sql_code, params=None):
+def con_my_sql(connection,sql_code, params=None):
     try:
-        conn.ping(reconnect=True)
-        print(sql_code)
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        connection.ping(reconnect=True)
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
         if params:
             cursor.execute(sql_code, params)
         else:
             cursor.execute(sql_code)
-        conn.commit()
+        connection.commit()
         
         return cursor
     except pymysql.MySQLError as err_message:
-        conn.rollback()
-        return None, type(err_message), err_message
+        connection.rollback()
+        return None
+
 
 #登录验证装饰器，确保用户登录后才能进行一些操作
 def login_required(f):
@@ -43,7 +46,7 @@ def index():
     user_info=None
     if username:
         code = "SELECT * FROM users WHERE username=%s"
-        cursor_ans = con_my_sql(code, (username,))
+        cursor_ans = con_my_sql(conn_user,code, (username,))
         cursor_select = cursor_ans.fetchall()
         cursor_ans.close()
         user_info = cursor_select[0]
@@ -54,16 +57,26 @@ def index():
 def user(id):
     username = session.get('username')
     code = "SELECT * FROM users WHERE username=%s"
-    cursor_ans = con_my_sql(code, (username,))
+    cursor_ans = con_my_sql(conn_user,code, (username,))
     cursor_select = cursor_ans.fetchall()
     cursor_ans.close()
     user_info = cursor_select[0]
     code = "SELECT * FROM users WHERE id=%s"
-    cursor_ans = con_my_sql(code, (id,))
+    cursor_ans = con_my_sql(conn_user,code, (id,))
     cursor_select = cursor_ans.fetchall()
     cursor_ans.close()
     user_info2 = cursor_select[0]
-    return render_template('user.html', username=username,user_info=user_info,id=id,user_info2=user_info2)
+    code = code = """
+        SELECT posts.*, user.users.username AS author 
+        FROM posts 
+        JOIN user.users ON posts.user_id = user.users.id 
+        WHERE posts.user_id = %s  
+        ORDER BY posts.time DESC
+        """ 
+    cursor_ans = con_my_sql(conn_posts,code, (id,))
+    user_posts = cursor_ans.fetchall()
+    cursor_ans.close()
+    return render_template('user.html', username=username,user_info=user_info,id=id,user_info2=user_info2,user_posts=user_posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -71,7 +84,7 @@ def login():
         name = request.form.get('username')
         psw = request.form.get('password')
         code = "SELECT * FROM users WHERE username=%s"
-        cursor_ans = con_my_sql(code, (name,))
+        cursor_ans = con_my_sql(conn_user,code, (name,))
         if cursor_ans is None:
             flash("数据库查询失败")
             return render_template('login.html')
@@ -103,7 +116,7 @@ def register():
             flash("两次密码不一致")
             return render_template('register.html')
         code = "SELECT * FROM users WHERE username=%s"
-        cursor_ans = con_my_sql(code, (name,))
+        cursor_ans = con_my_sql(conn_user,code, (name,))
         if cursor_ans is None:  # 修改部分：检查游标是否为 None
             flash("数据库查询失败")
             return render_template('register.html')
@@ -114,7 +127,7 @@ def register():
             return render_template('register.html')
         else:
             code = "INSERT INTO users (username, password, email) VALUES (%s, %s, %s)"
-            result=con_my_sql(code, (name, psw1, email))
+            result=con_my_sql(conn_user,code, (name, psw1, email))
             if result is None:  # 修改部分：检查插入操作是否成功
                 flash("注册失败")
                 return render_template('register.html')
@@ -129,6 +142,8 @@ def logout():
     session.pop('username', None)  # 移除 username 的会话
     return redirect('/')
 
+
+
 @app.route('/edit_user', methods=['POST'])
 @login_required
 def edit_user():
@@ -136,10 +151,10 @@ def edit_user():
     new_username = request.json.get('username')
     new_email = request.json.get('email')
     
-    # 检查新用户名是否已经存在
+    # 此处默认用户未修改用户名与邮箱
     if new_username and new_username != username:
         code = "SELECT * FROM users WHERE username=%s"
-        cursor_ans = con_my_sql(code, (new_username,))
+        cursor_ans = con_my_sql(conn_user,code, (new_username,))
         cursor_select = cursor_ans.fetchall()
         cursor_ans.close()
         if cursor_select:
@@ -147,13 +162,15 @@ def edit_user():
 
     # 更新用户名和邮箱
     code = "UPDATE users SET username=%s, email=%s WHERE username=%s"
-    result = con_my_sql(code, (new_username, new_email, username))
+    result = con_my_sql(conn_user, code, (new_username, new_email, username))
 
     if result:
         session['username'] = new_username if new_username else username  # 更新会话中的用户名
         return jsonify({"message": "用户信息已更新！"})
     else:
         return jsonify({"message": "更新失败！"}), 400
+
+
 
 @app.route('/change_password', methods=['POST'])
 @login_required
@@ -164,14 +181,14 @@ def change_password():
 
     # 查询用户当前的密码
     code = "SELECT * FROM users WHERE username=%s"
-    cursor_ans = con_my_sql(code, (username,))
+    cursor_ans = con_my_sql(conn_user,code, (username,))
     cursor_select = cursor_ans.fetchall()
     cursor_ans.close()
 
     if cursor_select and cursor_select[0]['password'] == old_password:
         # 更新密码
         update_code = "UPDATE users SET password=%s WHERE username=%s"
-        result = con_my_sql(update_code, (new_password, username))
+        result = con_my_sql(conn_user,update_code, (new_password, username))
         if result:
             return jsonify({"message": "密码已修改！"})
         else:
@@ -190,7 +207,7 @@ def upload_avatar():
     username = session.get('username')
 
     code = "SELECT id FROM users WHERE username=%s"
-    cursor_ans = con_my_sql(code, (username,))
+    cursor_ans = con_my_sql(conn_user,code, (username,))
     cursor_select = cursor_ans.fetchall()
     cursor_ans.close()
 
@@ -205,7 +222,7 @@ def upload_avatar():
         relative_path = f"images/{new_filename}"
         # 更新数据库中的头像路径
         code = "UPDATE users SET avatar_url=%s WHERE id=%s"
-        result = con_my_sql(code, (relative_path, user_id))
+        result = con_my_sql(conn_user,code, (relative_path, user_id))
         if result:
             return jsonify({"message": "头像已上传！"})
         else:
@@ -220,7 +237,7 @@ def search_user():
 
     # 查询用户
     code = "SELECT * FROM users WHERE username=%s"
-    cursor_ans = con_my_sql(code, (username,))
+    cursor_ans = con_my_sql(conn_user,code, (username,))
     cursor_select = cursor_ans.fetchall()
     cursor_ans.close()
 
@@ -228,13 +245,147 @@ def search_user():
         user_id = cursor_select[0]['id']  # 获取找到的用户 ID
         return jsonify({'status':1,'user_id': user_id,"message":"即将跳转到指定用户的主页"}), 200 
     else:
-        return jsonify({'status':0,'message': '用户未找到'}), 404 
+        return jsonify({'status':0,'message': '用户未找到'}), 404
 
+
+@app.route('/posts')
+def posts():
+    username = session.get('username')
+    user_info = None
+
+    if username:
+        code = "SELECT * FROM users WHERE username=%s"
+        cursor_ans = con_my_sql(conn_user, code, (username,))
+        cursor_select = cursor_ans.fetchall()
+        cursor_ans.close()
+        user_info = cursor_select[0]
+
+    code = """
+    SELECT posts.*, user.users.username AS author 
+    FROM posts 
+    JOIN user.users ON posts.user_id = user.users.id 
+    ORDER BY posts.time DESC
+    """
+
+    cursor_ans = con_my_sql(conn_posts, code)
+    if cursor_ans is None:
+        return jsonify({"status": "error", "message": "数据库查询失败"}), 500
+    posts = cursor_ans.fetchall()
+    cursor_ans.close()
+    return render_template('posts.html', username=username, posts=posts, user_info=user_info)
+
+@app.route('/create_post', methods=['POST'])
+@login_required
+def create_post():
+    username = session.get('username')
+    code = "SELECT * FROM users WHERE username=%s"
+    cursor_ans = con_my_sql(conn_user, code, (username,))
+    cursor_select = cursor_ans.fetchall()
+    cursor_ans.close()
+    user_info = cursor_select[0]
+
+    title = request.json.get('title')
+    content = request.json.get('content')
+    section = request.json.get('section')
+    
+    # 使用 user_info['id'] 作为 user_id
+    code = "INSERT INTO posts (title, content, section, user_id) VALUES (%s, %s, %s, %s)"
+    result = con_my_sql(conn_posts, code, (title, content, section, user_info['id']))
+    
+    if result:
+        return jsonify({"status": 1, "message": "发表成功"}), 200
+    else:
+        return jsonify({"status": 0, "message": "发表失败"}), 500
+
+
+@app.route('/posts_text/<int:post_id>')
+def posts_text(post_id):
+    username = session.get('username')
+    user_info = None
+    if username:
+        code = "SELECT * FROM users WHERE username=%s"
+        cursor_ans = con_my_sql(conn_user, code, (username,))
+        cursor_select = cursor_ans.fetchall()
+        cursor_ans.close()
+        user_info = cursor_select[0]
+
+    code = """
+        SELECT posts.*, user.users.username AS author 
+        FROM posts 
+        JOIN user.users ON posts.user_id = user.users.id 
+        Where posts.post_id = %s 
+        """
+
+    cursor_ans = con_my_sql(conn_posts, code,(post_id,))
+    if cursor_ans is None:
+        return jsonify({"status": "error", "message": "数据库查询失败"}), 500
+
+    post = cursor_ans.fetchone()
+    cursor_ans.close()
+
+    return render_template('posts_text.html', post=post, username=username, user_info=user_info)
+
+@app.route('/posts_search', methods=['POST'])
+def posts_search():
+    criteria = request.json.get('criteria')
+    if criteria == '全部':
+        code = """
+        SELECT posts.*, user.users.username AS author 
+        FROM posts 
+        JOIN user.users ON posts.user_id = user.users.id 
+        ORDER BY posts.time DESC
+        """
+        cursor_ans = con_my_sql(conn_posts, code)
+        if cursor_ans is None:
+            return jsonify({"status": 0, "message": "数据库查询失败"}), 500
+        
+        posts_data = cursor_ans.fetchall()
+        cursor_ans.close()
+        return jsonify({"status": 1, "message": "筛选成功", "posts": posts_data})
+    else:
+        code = """
+        SELECT posts.*, user.users.username AS author 
+        FROM posts 
+        JOIN user.users ON posts.user_id = user.users.id 
+        WHERE posts.section = %s  
+        ORDER BY posts.time DESC
+        """
+        cursor_ans = con_my_sql(conn_posts, code, (criteria,))
+        if cursor_ans is None:
+            return jsonify({"status": 0, "message": "数据库查询失败"}), 500
+        
+        posts_data = cursor_ans.fetchall()
+        cursor_ans.close()
+        return jsonify({"status": 1, "message": "筛选成功", "posts": posts_data})
+
+
+@app.route('/edit_post', methods=['POST'])
+@login_required
+def edit_post():
+    title = request.json.get('title')
+    section = request.json.get('section')
+    content = request.json.get('content')
+    post_id = request.json.get('post_id')
+
+    code = "UPDATE posts SET title=%s, section=%s, content=%s WHERE post_id=%s"
+    result = con_my_sql(conn_posts, code, (title, section, content, post_id))
+
+    if result:
+        return jsonify({"status": 1, "message": "帖子修改成功！"})
+    else:
+        return jsonify({"status": 0, "message": "帖子修改失败！"}), 400
+
+@app.route('/delete_post', methods=['POST'])
+@login_required
+def delete_post():
+    post_id = request.json.get('post_id')
+    code = "DELETE FROM posts WHERE post_id=%s"
+    result = con_my_sql(conn_posts, code, (post_id,))
+    if result:
+        return jsonify({"status": 1, "message": "帖子删除成功！"})
+    else:
+        return jsonify({"status": 0, "message": "帖子删除失败！"}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # name='123'
-    # password='123'
-    # email='123@123'
-    # code = "INSERT INTO users (username, password, email) VALUES (%s, %s, %s)"
-    # result = con_my_sql(code, (name, password, email))
+    

@@ -7,46 +7,58 @@ body {
     padding: 0px;
     margin: 0px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     height: 50px;
-    background: linear-gradient(135deg, rgba(255, 240, 160, 1) 0%, rgba(255, 224, 100, 1) 50%, rgba(255, 190, 80, 1) 100%); 
+    background: linear-gradient(135deg, rgba(255, 240, 160, 1) 0%, rgba(255, 224, 100, 1) 50%, rgba(255, 190, 80, 1) 100%);
     width: 100%;
-    position:relative;
-    transition: background-color 0.3s ease; /* 添加平滑过渡效果 */
-    
+    position: relative;
+    transition: background-color 0.3s ease;
+    /* 添加平滑过渡效果 */
+
 }
+
 .fixed {
-    position: fixed; /* 滚动后变为fixed */
-    top: 0; /* 固定在顶部 */
-    z-index: 1000; /* 确保在最上层 */
+    position: fixed;
+    /* 滚动后变为fixed */
+    top: 0;
+    /* 固定在顶部 */
+    z-index: 1000;
+    /* 确保在最上层 */
 }
 
 .menu-container {
     position: relative;
     display: flex;
-    align-items: center; 
+    align-items: center;
     margin-left: 10px;
     height: 40px;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* 添加平滑过渡 */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* 添加平滑过渡 */
 }
-.menu-container.active{
-    background-color: #6e76ad; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
-    border-radius: 5px; /* 轻微圆角 */
-     background: linear-gradient(135deg, #6e76ad, #9fa6d9); /* 渐变颜色 */
-   
+
+.menu-container.active {
+    background-color: #6e76ad;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* 添加阴影效果 */
+    border-radius: 5px;
+    /* 轻微圆角 */
+    background: linear-gradient(135deg, #6e76ad, #9fa6d9);
+    /* 渐变颜色 */
+
 }
 
 .menu-icon {
     margin-left: 5px;
     margin-right: 5px;
     font-size: 1.5em;
-    color: #6e76ad; 
+    color: #6e76ad;
     cursor: pointer;
-    transition: color 0.3s ease; /* 添加颜色过渡效果 */
+    transition: color 0.3s ease;
+    /* 添加颜色过渡效果 */
 }
+
 .menu-icon.active {
-    color: rgba(255, 240, 160, 1); 
+    color: rgba(255, 240, 160, 1);
 }
 
 
@@ -57,25 +69,31 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     top: 50px;
-    left: 0; /* 从左侧出现 */
-    opacity: 0; /* 初始透明度 */
-    transform: translateX(-100%); /* 初始位置在左侧外部 */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
-    height:100vh;
+    left: 0;
+    /* 从左侧出现 */
+    opacity: 0;
+    /* 初始透明度 */
+    transform: translateX(-100%);
+    /* 初始位置在左侧外部 */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    /* 添加过渡效果 */
+    height: 100vh;
 }
 
 
 .menu.active {
-    opacity: 1; /* 变为不透明 */
-    transform: translateX(0); /* 移动到原位 */
-    
+    opacity: 1;
+    /* 变为不透明 */
+    transform: translateX(0);
+    /* 移动到原位 */
+
 }
 
 
 .menu ul {
     list-style-type: none;
-    padding: 0; 
-    margin: 0; 
+    padding: 0;
+    margin: 0;
 }
 
 .menu a {
@@ -89,51 +107,57 @@ body {
     background-color: #f1f1f1;
 }
 
-.welcome-page
-{
-    height:100vh;
+.welcome-page {
+    height: 100vh;
     width: 100%;
 }
 
-.main-text 
-{
+.main-text {
     display: flex;
     margin-left: 180px;
-    padding-top: 60px;
+    padding-top: 70px;
     margin-right: 50px;
 }
-.left-text
-{
-    display:flex;
-    flex:3;
+
+.left-text {
+    display: flex;
+    flex: 3;
     flex-direction: column;
 }
 
-.left-text-nav 
-{
-    display:flex;
+.left-text-nav {
+    display: flex;
     flex-direction: row;
 }
 
-.left-text-nav-box 
-{
+.left-text-nav-box {
     background-color: white;
     margin-left: 50px;
     flex: 1;
     height: 120px;
-    /* border: 1px solid;
-    border-color: blue; */
+    display: flex;
+    justify-content: center;
+    /* 居中内容 */
+    align-items: center;
+    /* 垂直居中 */
+    border-radius: 20px;
 }
-.left-text-nav-box:hover
-{
+
+.left-text-nav-box:hover {
     transform: scale(1.01);
     box-shadow: rgb(0 0 0 / 25%) 0px 4px 2px -1px,
         rgb(0 0 0 / 19%) 0px 2px 2px 0px,
         rgb(0 0 0 / 17%) 0px 2px 6px 0px;
 }
 
-.left-text-textbox
+.temp 
 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-text-textbox {
     background-color: white;
     margin-right: 10px;
     height: 200px;
@@ -142,8 +166,18 @@ body {
     margin-top: 20px;
 }
 
-.left-text-textbox:hover
-{
+.left-text-textbox-a {
+
+    display: block;
+    font-size: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    padding: 25px;
+
+}
+
+.left-text-textbox:hover {
     transform: scale(1.01);
     box-shadow: rgb(0 0 0 / 25%) 0px 4px 2px -1px,
         rgb(0 0 0 / 19%) 0px 2px 2px 0px,
@@ -157,75 +191,138 @@ body {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.discussion 
-{
+.discussion {
     margin-left: 20px;
-    height:200px;
+    height: 200px;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    /* 居中内容 */
+    align-items: center;
+    /* 垂直居中 */
+    background-image: url('/static/images/blackboard.jpg');
+    background-size: cover;
+    /* 背景图片覆盖整个容器 */
+    background-position: center;
+    /* 设置背景图片居中 */
 }
-.discussion:hover
-{
+
+.discussion:hover {
     transform: scale(1.01);
     box-shadow: rgb(0 0 0 / 25%) 0px 4px 2px -1px,
         rgb(0 0 0 / 19%) 0px 2px 2px 0px,
         rgb(0 0 0 / 17%) 0px 2px 6px 0px;
 }
-.end
-{
-    height:100px;
+
+.end {
+    height: 100px;
     width: 100%;
     background-color: black;
     margin-top: 50px;
 }
 
-.photo-title
-{
+.photo-title {
     margin-top: 20px;
     margin-left: 20px;
-    height:100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 100px;
+}
+
+.photo {
+    position: relative;
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 300px;
     background-color: white;
 }
 
-.photo 
-{
-    margin-top: 20px;
-    margin-left: 20px;
-    height:300px;
-    background-color: white;
+.photo img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 自适应容器 */
+    opacity: 0;
+    /* 初始透明度 */
+    transition: opacity 1s;
+    /* 添加淡入淡出效果 */
 }
-.photo:hover
-{
+
+.photo-indicators {
+    position: absolute;
+    bottom: 20px;
+    /* 指示器距离底部的距离 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    /* 使用 flexbox 对齐 */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    color: rgb(141, 141, 141);
+    cursor: pointer;
+    background-color: rgba(232, 232, 232, 0.5);
+    /* 半透明背景 */
+    padding: 10px;
+    z-index: 2;
+    /* 在图片上显示 */
+}
+
+.left-arrow {
+    left: 0px;
+    /* 左侧距离 */
+}
+
+.right-arrow {
+    right: 0px;
+    /* 右侧距离 */
+}
+
+.photo:hover {
     transform: scale(1.01);
     box-shadow: rgb(0 0 0 / 25%) 0px 4px 2px -1px,
         rgb(0 0 0 / 19%) 0px 2px 2px 0px,
         rgb(0 0 0 / 17%) 0px 2px 6px 0px;
 }
 
-.title 
-{
+.title {
     position: relative;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
 }
-.title-icon
-{
-    height:40px;
-    margin-left:450px
+
+.title-icon {
+    height: 40px;
+    margin-left: 450px
 }
-.title-text
-{
+
+.title-text {
     font-family: 'Georgia', serif;
-    margin-left:80px;
-    background: linear-gradient(90deg, rgba(0, 51, 102, 1), rgba(0, 102, 204, 1), rgba(0, 153, 255, 1)); 
-    -webkit-background-clip: text; /* 文字剪裁 */
-    -webkit-text-fill-color: transparent; /* 文字填充透明 */
+    margin-left: 80px;
+    background: linear-gradient(90deg, rgba(0, 51, 102, 1), rgba(0, 102, 204, 1), rgba(0, 153, 255, 1));
+    -webkit-background-clip: text;
+    /* 文字剪裁 */
+    -webkit-text-fill-color: transparent;
+    /* 文字填充透明 */
 }
 
 /*以下是欢迎页背景切换用到的css样式*/
 .parallax {
     position: relative;
-    height:100%;
+    height: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -233,121 +330,235 @@ body {
 }
 
 .parallax img {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
+    position: absolute;
+    top: 0;
+    left: 0;
     padding-bottom: 50px;
-    width: 100%; 
-    height: 100%; /* 自适应容器 */
-    opacity: 0; /* 初始透明度 */
-    transition: opacity 1s; /* 添加淡入淡出效果 */
+    width: 100%;
+    height: 100%;
+    /* 自适应容器 */
+    opacity: 0;
+    /* 初始透明度 */
+    transition: opacity 1s;
+    /* 添加淡入淡出效果 */
 }
 
 .welcome-content {
     position: absolute;
     text-align: center;
     color: white;
-    z-index: 2; /* 确保文字在图片上方 */
+    z-index: 2;
+    /* 确保文字在图片上方 */
+    top: 20%;
+    /* 将文本垂直向上移动 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* 水平居中对齐 */
 }
 
 .welcome-text {
-    font-size: 4em; 
+    font-size: 4em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .indicators {
     position: absolute;
-    bottom: 70px; /* 指示器距离底部的距离 */
+    bottom: 70px;
+    /* 指示器距离底部的距离 */
     left: 50%;
     transform: translateX(-50%);
-    display: flex; /* 使用 flexbox 对齐 */
+    display: flex;
+    /* 使用 flexbox 对齐 */
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .indicators li {
-    width: 10px; /* 圆点的直径 */
+    width: 10px;
+    /* 圆点的直径 */
     height: 10px;
-    border-radius: 50%; /* 圆形 */
+    border-radius: 50%;
+    /* 圆形 */
     background: rgba(220, 91, 91, 0.5);
-    margin: 0 5px; /* 圆点之间的间距 */
-    cursor: pointer; /* 指针变为手形 */
-    transition: background 0.3s; /* 背景变化的过渡 */
+    margin: 0 5px;
+    /* 圆点之间的间距 */
+    cursor: pointer;
+    /* 指针变为手形 */
+    transition: background 0.3s;
+    /* 背景变化的过渡 */
 }
 
 .indicators li.active {
-    background: rgb(222, 221, 221); /* 激活时的背景颜色 */
+    background: rgb(222, 221, 221);
+    /* 激活时的背景颜色 */
 }
 
 /*超链接相关样式*/
 .custom-link {
-    color: black; /* 设置链接颜色为蓝色 */
-    text-decoration: none; /* 不带下划线 */
+    color: black;
+    /* 设置链接颜色为蓝色 */
+    text-decoration: none;
+    /* 不带下划线 */
     margin-left: 20px;
     max-width: 100px;
     overflow: hidden;
 }
+
 .custom-link:hover {
-    text-decoration: underline; /* 添加下划线 */
+    text-decoration: underline;
+    /* 添加下划线 */
 }
+
 .custom-link:visited {
-    color: black; /* 已访问链接保持蓝色 */
-    text-decoration: none; /* 不带下划线 */
+    color: black;
+    /* 已访问链接保持蓝色 */
+    text-decoration: none;
+    /* 不带下划线 */
 }
 
 
-.hyperlink-container
- {
+.hyperlink-container {
     position: relative;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
-    
- }
+
+}
 
 
- .user-icon
- {
+.user-icon {
     position: relative;
     margin-left: 400px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
-    height:40px;
-    width:40px;
-    border-radius: 50%; /* 使图像变成圆形 */
-    object-fit: cover; /* 保持图像的比例，填充整个圆形 */
-    
- }
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    /* 使图像变成圆形 */
+    object-fit: cover;
+    /* 保持图像的比例，填充整个圆形 */
 
- .info-container
- {
+}
+
+.info-container {
     position: relative;
     display: flex;
-    align-items: center; 
-   
+    align-items: center;
+
     background-color: rgb(225, 238, 250);
     margin-left: 200px;
     margin-right: 200px;
-    margin-top: 30px;
-    background-image: url('/static/images/info_background1.png'); /* 替换为你的图片路径 */
-    background-size: cover; /* 背景图片覆盖整个容器 */
-    background-position: center; /* 设置背景图片居中 */
-    padding: 20px; /* 添加内边距以适应内容 */
-    border-radius: 10px; /* 可选：设置圆角 */
-    color: white; /* 根据需要设置字体颜色 */
- }  
+    margin-top: 80px;
+    background-image: url('/static/images/info_background1.png');
+    background-size: cover;
+    /* 背景图片覆盖整个容器 */
+    background-position: center;
+    /* 设置背景图片居中 */
+    padding: 20px;
+    /* 添加内边距以适应内容 */
+    border-radius: 10px;
+    /* 可选：设置圆角 */
+    color: white;
+    /* 根据需要设置字体颜色 */
+}
 
- .user-icon-2
- {
+.user-icon-2 {
     position: relative;
     display: flex;
     margin-left: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
-    height:150px;
-    width:150px;
-    border-radius: 50%; /* 使图像变成圆形 */
-    object-fit: cover; /* 保持图像的比例，填充整个圆形 */
- }
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    /* 使图像变成圆形 */
+    object-fit: cover;
+    /* 保持图像的比例，填充整个圆形 */
+}
+
+.dynamic-text {
+    font-size: 3em;
+    font-family: 'Times New Roman', serif;
+    color: white;
+    white-space: pre-line;
+    font-weight: bold;
+}
+
+
+.custom-hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, #007bff, #f1f1f1);
+    margin: 20px 150px;
+}
+
+.custom-paragraph {
+    font-size: 1.2rem;
+    color: #b4b1b1;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+}
+
+.discussion-link {
+    font-size: 55px;
+    /* 字体大小 */
+    background: linear-gradient(90deg, white, #FFD700);
+    /* 从白色到金色的渐变 */
+    -webkit-background-clip: text;
+    /* 为文字应用背景裁剪 */
+    -webkit-text-fill-color: transparent;
+    /* 填充颜色透明以显示背景 */
+    text-decoration: none;
+    /* 去掉下划线 */
+    transition: text-decoration 0.3s;
+    /* 添加过渡效果 */
+    font-family: Georgia, serif;
+}
+
+.discussion-link:hover {
+    text-decoration: underline;
+    /* 鼠标悬停时添加下划线 */
+}
+
+.nav-link {
+    font-size: 25px;
+    /* 字体大小 */
+    display: inline-block;
+    /* 使链接为块级元素 */
+    text-decoration: none;
+    /* 去掉下划线 */
+    font-weight: bold;
+    /* 字体加粗 */
+    margin-top: 10px;
+    /* 上边距 */
+    transition: color 0.3s;
+    /* 颜色变化过渡 */
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    /* 鼠标悬停时添加下划线 */
+}
+
+.youqinglianjie {
+    font-family: Georgia, serif;
+    background: linear-gradient(90deg, #00008B, #4f97af, #00008B);
+    -webkit-background-clip: text;
+    /* 为文字应用背景裁剪 */
+    -webkit-text-fill-color: transparent;
+    /* 将填充颜色设为透明以显示背景 */
+}
+
+.guanfangwangzhan {
+    font-family: Georgia, serif;
+    background: linear-gradient(90deg, #FFFACD, #FFD700, #FFFACD);
+    -webkit-background-clip: text;
+    /* 为文字应用背景裁剪 */
+    -webkit-text-fill-color: transparent;
+    /* 将填充颜色设为透明以显示背景 */
+}

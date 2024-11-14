@@ -31,8 +31,10 @@
         </div>
         <div class="menu" id="menu">
             <ul>
-                <li><a href="#">首页</a></li>
-                <li><a href="#">关于我们</a></li>
+                <li><a href="{{url_for('index')}}">首页</a></li>
+                {% if username %}
+                <li><a href="{{url_for('user',id=user_info.id)}}">用户主页</a></li>
+                {% endif %}
                 <li><a href="#">服务</a></li>
                 <li><a href="#">联系我们</a></li>
             </ul>

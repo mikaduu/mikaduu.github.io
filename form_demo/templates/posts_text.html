@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户主页</title>
+    <title>mikadu的minecraft社区</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .post-display {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 840px; /* 设置最大宽度 */
+        }
+
+        .post-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            /* 下边框 */
+            padding-bottom: 10px;
+            /* 下边距 */
+            word-wrap: break-word; /* 自动换行 */
+        }
+
+        .post-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            /* 使信息部分分布均匀 */
+
+        }
+
+        .post-info span {
+            margin-right: 15px;
+        }
+
+        .post-content {
+            background-color: #f9f9f9;
+            /* 内容部分的背景色 */
+            padding: 15px;
+            border-radius: 8px;
+            color: #444;
+            line-height: 1.6;
+            /* 行高 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            max-width: 850px; /* 设置最大宽度 */
+            word-wrap: break-word; /* 自动换行 */
+            white-space: pre-wrap; /* 保持输入时的换行和空格 */
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgb(225, 238, 250);">
+    <div id="navbar" class="nav fixed">
+        <div class="menu-container">
+            <i class="fas fa-bars menu-icon" id="menu-icon"></i>
+        </div>
+
+        <div class="title">
+            <img src="../static/images/tubiao.jpg" alt="网站图标" class="title-icon">
+            <h1 class="title-text">My MC Community</h1>
+        </div>
+
+        <div class="hyperlink-container">
+            {%if username %}
+            <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon">
+            <a href="{{url_for('user',id=user_info.id)}}" class="custom-link">{{username}}</a>
+            {% else %}
+            <img src="../static/images/touxiang.jpg" alt="默认头像" class="user-icon">
+            <a href="{{url_for('login')}}" class="custom-link">登录/注册</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="menu" id="menu">
+        <ul>
+            <li><a href="{{url_for('index')}}">首页</a></li>
+            {% if username %}
+            <li><a href="{{url_for('user',id=user_info.id)}}">用户主页</a></li>
+            {% endif %}
+            <li><a href="{{url_for('posts')}}">讨论区</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </div>
+    <div class="main-text">
+
+        <div class="left-text">
+            <div class="post-display shadow">
+                <h2 class="post-title">{{ post.title }}</h2>
+                <div class="post-info">
+                    <span class="post-author">作者：{{ post.author }}</span>
+                    <span class="post-time">发布时间：{{ post.time.strftime('%Y年%m月%d日') }}</span>
+                    <span class="post-section">板块：{{ post.section }}</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>{{ post.content }}</p>
+            </div>
+        </div>
+        <div style="flex:1;;">
+            <!--右侧图片，讨论区-->
+            <div style="position: fixed;">
+                <div class="photo-title">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="gradBackground" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:rgb(255,228,225); stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:rgb(173,216,230); stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="gradText" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:rgb(255,0,150); stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:rgb(0,204,255); stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 背景矩形 -->
+                        <rect width="100%" height="100%" fill="url(#gradBackground)" rx="15" ry="15" />
+
+                        <!-- 文本 -->
+                        <text x="50%" y="55%" font-family="Arial" font-size="60" fill="url(#gradText)" stroke="black"
+                            stroke-width="1.5" text-anchor="middle" dominant-baseline="middle"
+                            style="font-family: 'KaiTi', serif; ">
+                            照片墙
+                        </text>
+                    </svg>
+                </div>
+                <div class="photo shadow">
+                    <img src="../static/images/photo1.jpg" alt="照片 1" class="photo-image" style="opacity: 1;">
+                    <img src="../static/images/photo2.jpg" alt="照片 2" class="photo-image" style="opacity: 0;">
+                    <img src="../static/images/photo3.jpg" alt="照片 3" class="photo-image" style="opacity: 0;">
+                    <img src="../static/images/photo4.jpg" alt="照片 4" class="photo-image" style="opacity: 0;">
+                    <img src="../static/images/photo5.jpg" alt="照片 5" class="photo-image" style="opacity: 0;">
+                    <div class="arrow left-arrow" id="left-arrow">&lt;</div>
+                    <div class="arrow right-arrow" id="right-arrow">&gt;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+</body>
+
+</html>

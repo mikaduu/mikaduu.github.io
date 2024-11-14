@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,122 +9,201 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/user.css')}}">
 </head>
+
 <body>
-    <div class="welcome-page" style="position: fixed;">
-        <div id="navbar" class="nav">
-            <div class="menu-container">
-                <i class="fas fa-bars menu-icon" id="menu-icon"></i>
-            </div>
 
-            <div class="title">
-                <img src="../static/images/tubiao.jpg" alt="网站图标" class="title-icon">
-                <h1 class="title-text">My MC Community</h1>
-            </div>
+    <div id="navbar" class="nav fixed">
+        <div class="menu-container">
+            <i class="fas fa-bars menu-icon" id="menu-icon"></i>
+        </div>
 
+        <div class="title">
+            <img src="../static/images/tubiao.jpg" alt="网站图标" class="title-icon">
+            <h1 class="title-text">My MC Community</h1>
         </div>
-        <div class="menu" id="menu">
-            <ul>
-                <li><a href="{{url_for('index')}}">首页</a></li>
-                <li><a href="#">关于我们</a></li>
-                <li><a href="#">服务</a></li>
-                <li><a href="#">联系我们</a></li>
-            </ul>
-        </div>
-        <div class="info-container">
-            {% if id == user_info.id %}
-            <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon-2">
-            <div class="user-info">
-                <p class="user-name"><span id="username">{{ user_info.username }}</span></p>
-                <br>
-                <p class="user-name">邮箱: <span id="email">{{ user_info.email }}</span></p>
-            </div>
+
+        <div class="hyperlink-container">
+            {%if username %}
+            <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon">
+            <a href="{{url_for('user',id=user_info.id)}}" class="custom-link">{{username}}</a>
             {% else %}
-            <img src="{{url_for('static', filename=user_info2.avatar_url)}}" alt="用户头像" class="user-icon-2">
-            <div class="user-info">
-                <p class="user-name"><span id="username">{{ user_info2.username }}</span></p>
-                <br>
-                <p class="user-name">邮箱: <span id="email">{{ user_info2.email }}</span></p>
-            </div>
+            <img src="../static/images/touxiang.jpg" alt="默认头像" class="user-icon">
+            <a href="{{url_for('login')}}" class="custom-link">登录/注册</a>
             {% endif %}
-            <div class="button-container">
-                {% if id == user_info.id %}
-                    <button class="edit-button" onclick="openEditModal()">修改信息</button>
-                    <button class="change-password" onclick="openPasswordModal()">修改密码</button>
-                    <button class="upload-avatar" onclick="openUploadModal()">上传头像</button>
-                {% endif %}
-                    <button class="search-user" onclick="openSearchModal()">查找用户</button>
-            </div>
         </div>
-        
-       
-         
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeEditModal()">&times;</span>
-                <h2>修改信息</h2>
-                <div class="form-group">
-                    <label for="username-input">用户名</label>
-                    <input type="text" id="username-input" value="{{ user_info.username }}">
-                </div>
-                <div class="form-group">
-                    <label for="email-input">邮箱</label>
-                    <input type="email" id="email-input" value="{{ user_info.email }}">
-                </div>
-                <button class="save-button" onclick="saveUserInfo()">保存</button>
-            </div>
-        </div>
-    
-        <!-- 修改密码模态框 -->
-        <div id="passwordModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closePasswordModal()">&times;</span>
-                <h2>修改密码</h2>
-                <div class="form-group">
-                    <label for="old-password">旧密码</label>
-                    <input type="password" id="old-password">
-                </div>
-                <div class="form-group">
-                    <label for="new-password">新密码</label>
-                    <input type="password" id="new-password">
-                </div>
-                <button class="save-button" onclick="changePassword()">保存</button>
-            </div>
-        </div>
-    
-        <!-- 上传头像模态框 -->
-        <div id="uploadModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeUploadModal()">&times;</span>
-                <h2>上传头像</h2>
-                <div class="form-group">
-                    <label for="avatar-input">选择头像</label>
-                    <input type="file" id="avatar-input" accept="image/*">
-                </div>
-                <button class="save-button" onclick="uploadAvatar()">上传</button>
-            </div>
-        </div>
-        <div id="searchModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeSearchModal()">&times;</span>
-                <h2>查找用户</h2>
-                <div class="form-group">
-                    <label for="search-input">请输入要查找的用户名</label>
-                    <input type="text" id="search-input" placeholder="用户名">
-                </div>
-                <button class="save-button" onclick="searchUser()">查找</button>
-            </div>
-        </div>
-        <!--登出按钮-->
+    </div>
+
+    <div class="menu" id="menu">
+        <ul>
+            <li><a href="{{url_for('index')}}">首页</a></li>
+            {% if username %}
+            <li><a href="{{url_for('user',id=user_info.id)}}">用户主页</a></li>
+            {% endif %}
+            <li><a href="{{url_for('posts')}}">讨论区</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </div>
+
+    <div class="info-container">
         {% if id == user_info.id %}
-        <div class="footer">
-            <form action="{{ url_for('logout') }}" method="get" style="display:inline;">
-                <button type="submit" class="logout-button">登出</button>
-            </form>
+        <img src="{{url_for('static', filename=user_info.avatar_url)}}" alt="用户头像" class="user-icon-2">
+        <div class="user-info">
+            <p class="user-name"><span id="username">{{ user_info.username }}</span></p>
+            <br>
+            <p class="user-name">邮箱: <span id="email">{{ user_info.email }}</span></p>
+        </div>
+        {% else %}
+        <img src="{{url_for('static', filename=user_info2.avatar_url)}}" alt="用户头像" class="user-icon-2">
+        <div class="user-info">
+            <p class="user-name"><span id="username">{{ user_info2.username }}</span></p>
+            <br>
+            <p class="user-name">邮箱: <span id="email">{{ user_info2.email }}</span></p>
         </div>
         {% endif %}
-        <script src="{{url_for('static', filename='js/script.js')}}"></script>
-        <script>
-            function openEditModal() {
+        <div class="button-container">
+            {% if id == user_info.id %}
+            <button class="edit-button" onclick="openEditModal()">修改信息</button>
+            <button class="change-password" onclick="openPasswordModal()">修改密码</button>
+            <button class="upload-avatar" onclick="openUploadModal()">上传头像</button>
+            {% endif %}
+            <button class="search-user" onclick="openSearchModal()">查找用户</button>
+        </div>
+
+
+    </div>
+
+    <h2 class="post-title">发布的帖子</h2>
+    <div class="posts-container">
+        {% for post in user_posts %}
+        <div class="post-card">
+            <div class="post-info">
+                <a href="{{url_for('posts_text',post_id=post.post_id)}}">
+                    <h2>{{ post.title }}</h2>
+                </a>
+                <span>发表于：{{ post.time.strftime('%Y-%m-%d') }}</span><br>
+                <span>作者：{{ post.author }}</span><br>
+                <span>板块：{{ post.section }}</span>
+            </div>
+            <div class="post-actions">
+                {% if id == user_info.id %}
+                <button class="edit-post-button"
+                    onclick="openEditPostModal('{{post.title}}','{{post.section}}',{{post.post_id}})">修改</button>
+                <button class="delete-post-button" onclick="openDeletePostModal({{post.post_id}})">删除</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="margin-bottom: 50px;">
+
+    </div>
+
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>修改信息</h2>
+            <div class="form-group">
+                <label for="username-input">用户名</label>
+                <input type="text" id="username-input" value="{{ user_info.username }}">
+            </div>
+            <div class="form-group">
+                <label for="email-input">邮箱</label>
+                <input type="email" id="email-input" value="{{ user_info.email }}">
+            </div>
+            <button class="save-button" onclick="saveUserInfo()">保存</button>
+        </div>
+    </div>
+
+    <!-- 修改密码模态框 -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePasswordModal()">&times;</span>
+            <h2>修改密码</h2>
+            <div class="form-group">
+                <label for="old-password">旧密码</label>
+                <input type="password" id="old-password">
+            </div>
+            <div class="form-group">
+                <label for="new-password">新密码</label>
+                <input type="password" id="new-password">
+            </div>
+            <button class="save-button" onclick="changePassword()">保存</button>
+        </div>
+    </div>
+
+    <!-- 上传头像模态框 -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUploadModal()">&times;</span>
+            <h2>上传头像</h2>
+            <div class="form-group">
+                <label for="avatar-input">选择头像</label>
+                <input type="file" id="avatar-input" accept="image/*">
+            </div>
+            <button class="save-button" onclick="uploadAvatar()">上传</button>
+        </div>
+    </div>
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSearchModal()">&times;</span>
+            <h2>查找用户</h2>
+            <div class="form-group">
+                <label for="search-input">请输入要查找的用户名</label>
+                <input type="text" id="search-input" placeholder="用户名">
+            </div>
+            <button class="save-button" onclick="searchUser()">查找</button>
+        </div>
+    </div>
+    <!--登出按钮-->
+    {% if id == user_info.id %}
+    <div class="footer">
+        <form action="{{ url_for('logout') }}" method="get" style="display:inline;">
+            <button type="submit" class="logout-button">登出</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- 编辑帖子模态框 -->
+    <div id="editPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditPostModal()">&times;</span>
+            <h2>修改帖子</h2>
+            <div class="form-group">
+                <label for="editPostTitle">帖子标题</label>
+                <input type="text" id="editPostTitle" class="form-control" placeholder="输入帖子标题..." required>
+            </div>
+            <div class="form-group">
+                <label for="editPostType">选择帖子类型</label>
+                <select id="editPostType" class="form-control" required>
+                    <option value="">请选择类型</option>
+                    <option value="生存">生存</option>
+                    <option value="建筑">建筑</option>
+                    <option value="红石">红石</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editPostContent">帖子内容</label>
+                <textarea id="editPostContent" class="form-control" rows="5" placeholder="输入你的帖子内容..."
+                    required></textarea>
+            </div>
+            <button class="save-button" onclick="submitEditPost()">保存更改</button>
+        </div>
+    </div>
+    <!-- 删除帖子模态框 -->
+    <div id="deletePostModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeletePostModal()">&times;</span>
+            <h2>确认删除</h2>
+            <p>您真的要删除这条帖子吗？</p>
+            <button class="confirm-button" onclick="confirmDeletePost()">确认</button>
+            <button class="cancel-button" onclick="closeDeletePostModal()">取消</button>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal() {
             document.getElementById('editModal').style.display = 'block';
         }
 
@@ -154,108 +234,223 @@
             document.getElementById('searchModal').style.display = 'none';
         }
 
+
+
         function saveUserInfo() {
-         const username = document.getElementById('username-input').value;
-         const email = document.getElementById('email-input').value;
+            const username = document.getElementById('username-input').value;
+            const email = document.getElementById('email-input').value;
 
-         fetch('/edit_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: username, email: email }),
+            fetch('/edit_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username, email: email }),
             })
-            .then(response => response.json())
-            .then(data => {
-            {
-                alert(data.message);
-            }
-        closeEditModal();
-        window.location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-    function changePassword() {
-        const oldPassword = document.getElementById('old-password').value;
-        const newPassword = document.getElementById('new-password').value;
-
-        fetch('/change_password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            closePasswordModal();
-            window.location.reload();  // 根据需求决定是否刷新
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    function uploadAvatar() {
-        const fileInput = document.getElementById('avatar-input');
-        if (fileInput.files.length === 0) {
-            alert("请选择一个头像文件！");
-            return;
+                .then(response => response.json())
+                .then(data => {
+                    {
+                        alert(data.message);
+                    }
+                    closeEditModal();
+                    window.location.reload();
+                })
+                .catch(error => console.error('Error:', error));
         }
 
-        const formData = new FormData();
-        formData.append('avatar', fileInput.files[0]);
+        function changePassword() {
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
 
-        fetch('/upload_avatar', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            closeUploadModal();
-            window.location.reload();  // 刷新以显示新的头像
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    function searchUser() {
-        const searchInput = document.getElementById('search-input').value;
-        if (searchInput === "") {
-        alert("请输入用户名！");
-        return;
+            fetch('/change_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    closePasswordModal();
+                    window.location.reload();  // 根据需求决定是否刷新
+                })
+                .catch(error => console.error('Error:', error));
         }
-    
-        fetch('/search_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: searchInput }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status===1)
-            {
-                alert(data.message);
-                window.location.href = "/user/" + data.user_id;
+
+        function uploadAvatar() {
+            const fileInput = document.getElementById('avatar-input');
+            if (fileInput.files.length === 0) {
+                alert("请选择一个头像文件！");
+                return;
             }
-            else
-            {
-                alert(data.message);
+
+            const formData = new FormData();
+            formData.append('avatar', fileInput.files[0]);
+
+            fetch('/upload_avatar', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    closeUploadModal();
+                    window.location.reload();  // 刷新以显示新的头像
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function searchUser() {
+            const searchInput = document.getElementById('search-input').value;
+            if (searchInput === "") {
+                alert("请输入用户名！");
+                return;
             }
-       
-        })
-        .catch(error => {
-            alert(error.message); // 显示未找到用户的提示
-        })
-        .finally(() => {
-            closeSearchModal();  // 关闭查找用户的模态框
-        });
-}
-        
+
+            fetch('/search_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: searchInput }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 1) {
+                        alert(data.message);
+                        window.location.href = "/user/" + data.user_id;
+                    }
+                    else {
+                        alert(data.message);
+                    }
+
+                })
+                .catch(error => {
+                    alert(error.message); // 显示未找到用户的提示
+                })
+                .finally(() => {
+                    closeSearchModal();  // 关闭查找用户的模态框
+                });
+        }
+
+
+
+
+        let currentPostId; // 定义全局变量
+
+        function openEditPostModal(title, section, postId) {
+            document.getElementById('editPostTitle').value = title;
+            document.getElementById('editPostType').value = section;
+            var postContent = {{ user_posts | tojson
+        }}.find(post => post.post_id == postId).content;
+        document.getElementById('editPostContent').value = postContent;
+        document.getElementById('editPostModal').style.display = 'block'; // 显示模态框
+        currentPostId = postId;
+        }
+        function closeEditPostModal() {
+            document.getElementById('editPostModal').style.display = 'none';
+        }
+        function submitEditPost() {
+            const title = document.getElementById('editPostTitle').value;
+            const postType = document.getElementById('editPostType').value;
+            const content = document.getElementById('editPostContent').value;
+
+            const postData = {
+                title: title,
+                section: postType,
+                content: content,
+                post_id: currentPostId
+            };
+
+            fetch('/edit_post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 1) {
+                        alert(data.message);
+                        closeEditPostModal();
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function closeEditPostModal() {
+            document.getElementById('editPostModal').style.display = 'none';
+        }
+        function submitEditPost() {
+            const title = document.getElementById('editPostTitle').value;
+            const postType = document.getElementById('editPostType').value;
+            const content = document.getElementById('editPostContent').value;
+
+            const postData = {
+                title: title,
+                section: postType,
+                content: content,
+                post_id: currentPostId
+            };
+
+            fetch('/edit_post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 1) {
+                        alert(data.message);
+                        closeEditPostModal();
+                        window.location.reload();  // 刷新页面以显示更新
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function openDeletePostModal(postId) {
+            currentPostId = postId; // 保存要删除的帖子 ID
+            document.getElementById('deletePostModal').style.display = 'block'; // 显示删除确认模态框
+        }
+
+        function closeDeletePostModal() {
+            document.getElementById('deletePostModal').style.display = 'none'; // 关闭删除确认模态框
+        }
+        function confirmDeletePost() {
+            const postID=currentPostId;
+            fetch('/delete_post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ post_id: postID }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 1) {
+                        alert(data.message);
+                        closeDeletePostModal();
+                        window.location.reload();  // 刷新页面以显示删除的帖子
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));    
+        }
+
         // 当点击模态框外部区域时，关闭模态框
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target === document.getElementById('editModal')) {
                 closeEditModal();
             }
@@ -266,9 +461,18 @@
                 closeUploadModal();
             }
             if (event.target === document.getElementById('searchModal')) {
+                closeSearchModal()
+            }
+            if (event.target === document.getElementById('editPostModal')) {
                 closeUploadModal();
             }
+            if(event.target === document.getElementById('deletePostModal')){
+                closeDeletePostModal();
+            }
         }
-        </script>
+
+    </script>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
+
 </html>
